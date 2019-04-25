@@ -12,6 +12,8 @@ router.use(bodyParser.json());
 /* GET users listing. */
 router.post('/', function(req, res, next) {
   let message = req.body.queryResult.parameters.messageBody; 
+  let meetingDate = req.body.queryResult.parameters.afspraakDag; 
+  let meetingTime = req.body.queryResult.parameters.afsprakenTijd; 
   let recipient = req.body.queryResult.parameters.namen; 
   // let url = "http://www.omdbapi.com/?t="+showTitle+"&apikey=752fa0bf";
   let action = req.body.queryResult.action; 
@@ -44,7 +46,12 @@ router.post('/', function(req, res, next) {
     // }).catch(err =>{
     //   console.log(err); 
     // })
-    textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
+    if(action == "askVisit"){
+      textResponse = "u wilt " + recipient + " vragen " + meetingDate + " om " + meetingTime + " langs te komen, is dit correct?"; 
+    }else if(action == "sendMessage"){
+      textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
+    }
+    
     res.send(createTextResponse(textResponse)); 
 });
 
