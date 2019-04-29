@@ -15,7 +15,20 @@ router.post('/', function(req, res, next) {
   let meetingDate = req.body.queryResult.parameters.afspraakDag; 
   let meetingTime = req.body.queryResult.parameters.afsprakenTijd; 
   let recipient = req.body.queryResult.parameters.namen; 
-  let newName = req.body.queryResult.outputContexts[0].parameters.namen; 
+  var berichten = [
+    {
+      sendDate :"29 april 2019", 
+      sendTime : "4 uur s'middags",
+      body : "hi mam, ik kom wat later", 
+      userName : "Jan" 
+    }, 
+    {
+      sendDate : "30 april 2019", 
+      sendTime : "6 uur s'avonds",
+      body : "hey, ik kom aankomend weekend even op de koffie", 
+      userName : "Jan" 
+    }
+  ];
   
   // let url = "http://www.omdbapi.com/?t="+showTitle+"&apikey=752fa0bf";
   let action = req.body.queryResult.action; 
@@ -53,11 +66,24 @@ router.post('/', function(req, res, next) {
     }else if(action ==  "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
       textResponse = "ik heb de ontvanger veranderd naar " + recipient; 
     }else if(action == "vraagLangskomen.vraagLangskomen-yes"){
-      console.log("this works"); 
+      let newName = req.body.queryResult.outputContexts[1].parameters.namen;
       textResponse = "ik heb de uitnodiging verstuurd naar " + newName; 
-      
-    }else if(action == "sendMessage"){
+    }else if(action == "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-dedatum-custom"){
+      let newDate = req.body.queryResult.parameters.afspraakDag; 
+      textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
+    }
+    else if(action == "sendMessage"){
       textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
+    }
+
+
+    else if(action == "opvragenBerichten"){
+      textResponse = "u heeft " + berichten.length + " nieuwe berichten. Zal ik deze voor u afspelen?" ; 
+    }else if(action == "opvragenBerichten.opvragenBerichten-yes"){
+      textResponse = `<speak> 1e bericht van  ${berichten[0].userName}, " ontvangen op ${berichten[0].sendDate}, om ${berichten[0].sendTime}: ${berichten[0].body} <break time="800ms"/> 
+                      2e bericht van  ${berichten[1].userName}, " ontvangen op ${berichten[1].sendDate}, om ${berichten[1].sendTime}: ${berichten[1].body} <break time="800ms"/> 
+                      Wilt u de berichten nog een keer horen? </speak>`
+                  
     }
     
     res.send(createTextResponse(textResponse)); 
