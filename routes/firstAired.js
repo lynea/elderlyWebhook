@@ -15,19 +15,41 @@ router.post('/', function(req, res, next) {
   let meetingDate = req.body.queryResult.parameters.afspraakDag; 
   let meetingTime = req.body.queryResult.parameters.afsprakenTijd; 
   let recipient = req.body.queryResult.parameters.namen; 
+  let tijdPeriode = req.body.queryResult.parameters.tijdPeriode; 
   var berichten = [
     {
       sendDate :"29 april 2019", 
       sendTime : "4 uur s'middags",
-      body : "hi mam, ik kom wat later", 
+      body : "hi mam, ik kom wat later.", 
       userName : "Jan" 
     }, 
     {
       sendDate : "30 april 2019", 
       sendTime : "6 uur s'avonds",
-      body : "hey, ik kom aankomend weekend even op de koffie", 
+      body : "hey, ik kom aankomend weekend even op de koffie.", 
       userName : "Jan" 
     }
+  ];
+
+  var planning = [
+    {
+      day :"maandag", 
+      startTime : "8 uur s'avonds",
+      endTime : "10 uur s'avonds", 
+      user : "Jan" 
+    }, 
+    {
+      day :"woensdag", 
+      startTime : "4 uur s'middags",
+      endTime : "6 uur s'middags", 
+      user : "Aletta" 
+    }, 
+    {
+      day :"vrijdag", 
+      startTime : "8 uur s'avonds",
+      endTime : "10 uur s'avonds", 
+      user : "Ramon" 
+    }, 
   ];
   
   // let url = "http://www.omdbapi.com/?t="+showTitle+"&apikey=752fa0bf";
@@ -80,12 +102,26 @@ router.post('/', function(req, res, next) {
     else if(action == "opvragenBerichten"){
       textResponse = "u heeft " + berichten.length + " nieuwe berichten. Zal ik deze voor u afspelen?" ; 
     }else if(action == "opvragenBerichten.opvragenBerichten-yes"){
-      textResponse = `<speak> 1e bericht van  ${berichten[0].userName}, " ontvangen op ${berichten[0].sendDate}, om ${berichten[0].sendTime}: ${berichten[0].body} <break time="800ms"/> 
-                      2e bericht van  ${berichten[1].userName}, " ontvangen op ${berichten[1].sendDate}, om ${berichten[1].sendTime}: ${berichten[1].body} <break time="800ms"/> 
-                      Wilt u de berichten nog een keer horen? </speak>`
-                  
+      textResponse = `<speak> 1e bericht van  ${berichten[0].userName}, " ontvangen op ${berichten[0].sendDate}, om ${berichten[0].sendTime}:<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio> ${berichten[0].body} <break time="800ms"/> 
+                      2e bericht van  ${berichten[1].userName}, " ontvangen op ${berichten[1].sendDate}, om ${berichten[1].sendTime}:<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio> ${berichten[1].body} <break time="800ms"/> 
+                      Wilt u de berichten nog een keer horen? </speak>`             
     }
-    
+
+
+    else if(action == "planningOpvragen"){
+      textResponse = ` <speak> Er staan ${tijdPeriode} ${planning.length} afspraken op uw planning. Wilt u ze allemaal horen,<break time="100ms"/> of alleen de eerstvolgende? </speak>`             
+    }else if(action == "opvragenPlanning.opvragenPlanning-allemaal"){
+      textResponse = ` <speak> Uw eerstvolgende bezoek is van ${planning[0].user} op ${planning[0].day} van ${planning[0].startTime} tot ${planning[0].endTime}. <break time="300ms"/>
+      het tweede bezoek is van ${planning[1].user} op ${planning[1].day} van ${planning[1].startTime} tot ${planning[1].endTime}. <break time="300ms"/>
+      Het derde bezoek is van ${planning[2].user} op ${planning[2].day} van ${planning[2].startTime} tot ${planning[2].endTime}. <break time="500ms"/>
+      Wilt u ze nogmaals horen?
+      </speak>`             
+    }
+    else if(action == "opvragenPlanning.opvragenPlanning-eerstVolgende"){
+      textResponse = ` <speak> Uw eerstvolgende bezoek is van ${planning[0].user} op ${planning[0].day} van ${planning[0].startTime} tot ${planning[0].endTime}. <break time="500ms"/>
+      Wilt u deze nogmaals horen?
+      </speak>`             
+    }
     res.send(createTextResponse(textResponse)); 
 });
 
