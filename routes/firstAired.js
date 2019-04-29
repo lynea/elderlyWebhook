@@ -48,6 +48,8 @@ router.post('/', function(req, res, next) {
     // })
     if(action == "askVisit"){
       textResponse = "u wilt " + recipient + " vragen " + meetingDate + " om " + meetingTime + " langs te komen, is dit correct?"; 
+    }else if(action = "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
+      textResponse = "u wilt " + recipient + " vragen " + meetingDate + " om " + meetingTime + " langs te komen, is dit correct?"; 
     }else if(action == "sendMessage"){
       textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
     }
