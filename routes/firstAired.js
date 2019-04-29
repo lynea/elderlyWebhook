@@ -15,6 +15,8 @@ router.post('/', function(req, res, next) {
   let meetingDate = req.body.queryResult.parameters.afspraakDag; 
   let meetingTime = req.body.queryResult.parameters.afsprakenTijd; 
   let recipient = req.body.queryResult.parameters.namen; 
+  let newName = req.body.queryResult.outputContexts[0].parameters.namen; 
+  
   // let url = "http://www.omdbapi.com/?t="+showTitle+"&apikey=752fa0bf";
   let action = req.body.queryResult.action; 
  console.log("we did hit the route"); 
@@ -48,8 +50,12 @@ router.post('/', function(req, res, next) {
     // })
     if(action == "askVisit"){
       textResponse = "u wilt " + recipient + " vragen " + meetingDate + " om " + meetingTime + " langs te komen, is dit correct?"; 
-    }else if(action = "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
-      textResponse = "u wilt " + recipient + " vragen " + meetingDate + " om " + meetingTime + " langs te komen, is dit correct?"; 
+    }else if(action ==  "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
+      textResponse = "ik heb de ontvanger veranderd naar " + recipient; 
+    }else if(action == "vraagLangskomen.vraagLangskomen-yes"){
+      console.log("this works"); 
+      textResponse = "ik heb de uitnodiging verstuurd naar " + newName; 
+      
     }else if(action == "sendMessage"){
       textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
     }
