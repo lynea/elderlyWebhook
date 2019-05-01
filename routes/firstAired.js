@@ -122,6 +122,14 @@ router.post('/', function(req, res, next) {
       Wilt u deze nogmaals horen?
       </speak>`             
     }
+
+    else if(action == "help"){
+      textResponse = ` <speak> 
+      U kunt mij vragen uw berichten voor te lezen,  een nood signaal te verzenden, vertellen wie er op welk moment bij u langs komt, een uitnodiging versturen, informatie geven over medicijnen, 
+      en een verhaal vertellen.<break time="500ms"/>
+      Wilt u de instructies nog een keer horen?
+      </speak>`             
+    }
     res.send(createTextResponse(textResponse)); 
 });
 
