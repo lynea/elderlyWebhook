@@ -1,4 +1,5 @@
 var express = require('express');
+
 var router = express.Router();
 var axios = require("axios"); 
 const bodyParser = require('body-parser')
@@ -11,6 +12,7 @@ router.use(bodyParser.json());
 
 /* GET users listing. */
 router.post('/', function(req, res, next) {
+  console.log("webhook werkt! ")
   let message = req.body.queryResult.parameters.messageBody; 
   let meetingDate = req.body.queryResult.parameters.afspraakDag; 
   let meetingTime = req.body.queryResult.parameters.afsprakenTijd; 
@@ -21,7 +23,7 @@ router.post('/', function(req, res, next) {
       sendDate :"29 april 2019", 
       sendTime : "4 uur s'middags",
       body : "hi mam, ik kom wat later.", 
-      userName : "Jan" 
+      userName : "Lisa" 
     }, 
     {
       sendDate : "30 april 2019", 
@@ -52,6 +54,17 @@ router.post('/', function(req, res, next) {
     }, 
   ];
   
+var medSchema = [
+  {
+    actie: "bloedverdunners innemen",
+    tijd:"8 uur",
+  },
+  {
+    actie: "suikerspiegel prikken",
+    tijd:"9 uur",
+  },
+];
+
   // let url = "http://www.omdbapi.com/?t="+showTitle+"&apikey=752fa0bf";
   let action = req.body.queryResult.action; 
  console.log("we did hit the route"); 
@@ -94,9 +107,39 @@ router.post('/', function(req, res, next) {
       let newDate = req.body.queryResult.parameters.afspraakDag; 
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
     }
-    else if(action == "sendMessage"){
-      textResponse = "uw bericht voor " + recipient + " is: " + message +"." + " is dit correct?"; 
+
+    else if(action == "sendMessageName"){
+   
+      textResponse = "u wilt een bericht naar " + recipient + " sturen. is dit correct?"; 
     }
+    else if(action == "bericht_Versturen_VeranderNaam"){
+      textResponse = `ik heb de onvanger veranderd naar ${recipient}  is dit correct?`; 
+    }
+
+    else if(action == "sendMessageBody"){
+      var body = (req.body.queryResult.queryText);
+      textResponse = `<speak> uw bericht is:
+      <audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio> 
+      <break time="300ms"/>
+      ${body}
+      <break time="500ms"/>
+      is dit correct?
+     </speak>`
+    }
+
+  else if(action == "bericht_Versturen_VeranderBericht"){
+    
+    var newBody = (req.body.queryResult.queryText); 
+    textResponse = `<speak> uw bericht is veranderd naar:
+     <audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio> 
+     <break time="300ms"/>
+     ${newBody}
+     <break time="500ms"/>
+     is dit correct?
+    </speak>`
+  }
+
+
 
 
     else if(action == "opvragenBerichten"){
@@ -130,6 +173,31 @@ router.post('/', function(req, res, next) {
       Wilt u de instructies nog een keer horen?
       </speak>`             
     }
+
+    else if(action == "medSchema"){
+      let followUpName = req.body.queryResult.outputContexts[0].parameters.namen;
+          if(recipient == "ik" || recipient == "mijzelf" ||recipient == "mij" || followUpName == "ik" || followUpName == "mijzelf" || followUpName == "mezelf" ) {textResponse = ` <speak> 
+          U moet vandaag om ${medSchema[0].tijd} ${medSchema[0].actie} en om ${medSchema[1].tijd} ${medSchema[1].actie} 
+          <break time="500ms"/>
+          kan ik nog iets voor u betekenen? 
+          </speak>`
+      }else if(recipient != null){
+        textResponse = ` <speak> 
+        ${recipient} moet vandaag om ${medSchema[0].tijd} ${medSchema[0].actie} en om ${medSchema[1].tijd} ${medSchema[1].actie}
+        <break time="500ms"/>
+        kan ik nog iets voor u betekenen? 
+        </speak>`   
+      }   
+      else{
+        textResponse = ` <speak> 
+        ${followUpName} moet vandaag om ${medSchema[0].tijd} ${medSchema[0].actie} en om ${medSchema[1].tijd} ${medSchema[1].actie}
+        <break time="500ms"/>
+       kan ik nog iets voor u betekenen? 
+        </speak>`   
+      }        
+    }
+
+
     res.send(createTextResponse(textResponse)); 
 });
 
