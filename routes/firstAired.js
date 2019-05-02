@@ -22,13 +22,13 @@ router.post('/', function(req, res, next) {
     {
       sendDate :"29 april 2019", 
       sendTime : "4 uur s'middags",
-      body : "hi mam, ik kom wat later.", 
+      body : "hi mam, ik kom wat later want ik sta in de file.", 
       userName : "Lisa" 
     }, 
     {
       sendDate : "30 april 2019", 
       sendTime : "6 uur s'avonds",
-      body : "hey, ik kom aankomend weekend even op de koffie.", 
+      body : "hey, ik kom aankomende zaterdag om drie uur even een taart langs brengen.", 
       userName : "Jan" 
     }
   ];
@@ -101,8 +101,11 @@ var medSchema = [
     }else if(action ==  "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
       textResponse = "ik heb de ontvanger veranderd naar " + recipient; 
     }else if(action == "vraagLangskomen.vraagLangskomen-yes"){
-      let newName = req.body.queryResult.outputContexts[1].parameters.namen;
-      textResponse = "ik heb de uitnodiging verstuurd naar " + newName; 
+      let newName = req.body.queryResult.outputContexts[0].parameters.namen;
+      textResponse = ` <speak> ik heb de uitnodiging verstuurd naar  ${newName}
+      <break time="500ms"/>
+      kan ik nog iets voor u betekenen? 
+       </speak>`; 
     }else if(action == "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-dedatum-custom"){
       let newDate = req.body.queryResult.parameters.afspraakDag; 
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
@@ -110,7 +113,7 @@ var medSchema = [
 
   
     else if(action == "bericht_Versturen_VeranderNaam"){
-      textResponse = `ik heb de ontvanger veranderd naar ${recipient}  is dit correct?`; 
+      textResponse = `ik heb de ontvanger veranderd naar ${recipient}  zal ik het bericht versturen?`; 
     }
 
     else if(action == "sendMessage"){
@@ -144,7 +147,7 @@ var medSchema = [
      <break time="300ms"/>
      ${newBody}
      <break time="500ms"/>
-     is dit correct?
+     wilt u dit versturen?
     </speak>`
   }
 
@@ -186,7 +189,7 @@ var medSchema = [
     else if(action == "medSchema"){
       let followUpName = req.body.queryResult.outputContexts[0].parameters.namen;
           if(recipient == "ik" || recipient == "mijzelf" ||recipient == "mij" || followUpName == "ik" || followUpName == "mijzelf" || followUpName == "mezelf" ) {textResponse = ` <speak> 
-          U moet vandaag om ${medSchema[0].tijd} ${medSchema[0].actie} en om ${medSchema[1].tijd} ${medSchema[1].actie} 
+          U moet vandaag om ${medSchema[0].tijd} ${medSchema[0].actie} en om ${medSchema[1].tijd} uw ${medSchema[1].actie} 
           <break time="500ms"/>
           kan ik nog iets voor u betekenen? 
           </speak>`
