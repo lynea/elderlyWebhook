@@ -112,11 +112,16 @@ var medSchema = [
     }
 
   
-    else if(action == "bericht_Versturen_VeranderNaam"){
-      textResponse = `ik heb de ontvanger veranderd naar ${recipient}  zal ik het bericht versturen?`; 
+    else if(action == "welcome"){
+      textResponse = ` <speak> Hallo ik ben Elderly.
+      <break time="300ms"/>
+      Ik kan u helpen met het communiceren met uw familie. <break time="300ms"/> Zo kan ik bijvoorbeeld berichten versturen,  <break time="300ms"/> uw familieleden vragen op bezoek te komen  <break time="300ms"/> en u vertellen wat er allemaal op uw schema staat.  <break time="300ms"/> wat kan ik voor u betekenen? </speak>`; 
     }
 
-    else if(action == "sendMessage"){
+
+    else if(action == "bericht_Versturen_VeranderNaam"){
+      textResponse = `ik heb de ontvanger veranderd naar ${recipient}  zal ik het bericht versturen?`; 
+    }else if(action == "sendMessage"){
       var body = (req.body.queryResult.parameters.bericht);
       textResponse = `<speak>
       u wilt uw bericht naar ${recipient} sturen
@@ -180,8 +185,10 @@ var medSchema = [
 
     else if(action == "help"){
       textResponse = ` <speak> 
-      U kunt mij vragen uw berichten voor te lezen,  een nood signaal te verzenden, vertellen wie er op welk moment bij u langs komt, een uitnodiging versturen, informatie geven over medicijnen, 
-      en een verhaal vertellen.<break time="500ms"/>
+      U kunt mij vragen uw berichten voor te lezen,<break time="300ms"/>  een nood signaal te verzenden, <break time="300ms"/> vertellen wie er op welk moment bij u langs komt, <break time="300ms"/> een uitnodiging versturen, <break time="300ms"/> en informatie geven over medicijnen. 
+      <break time="500ms"/>  
+      u kunt het gesprek stoppen door stop tegen mij te zeggen.
+      <break time="500ms"/>
       Wilt u de instructies nog een keer horen?
       </speak>`             
     }
