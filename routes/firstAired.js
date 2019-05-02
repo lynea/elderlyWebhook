@@ -108,22 +108,31 @@ var medSchema = [
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
     }
 
-    else if(action == "sendMessageName"){
-   
-      textResponse = "u wilt een bericht naar " + recipient + " sturen. is dit correct?"; 
-    }
+  
     else if(action == "bericht_Versturen_VeranderNaam"){
-      textResponse = `ik heb de onvanger veranderd naar ${recipient}  is dit correct?`; 
+      textResponse = `ik heb de ontvanger veranderd naar ${recipient}  is dit correct?`; 
     }
 
-    else if(action == "sendMessageBody"){
-      var body = (req.body.queryResult.queryText);
-      textResponse = `<speak> uw bericht is:
+    else if(action == "sendMessage"){
+      var body = (req.body.queryResult.parameters.bericht);
+      textResponse = `<speak>
+      u wilt uw bericht naar ${recipient} sturen
+      <break time="300ms"/>
+      en uw bericht is:
       <audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio> 
       <break time="300ms"/>
       ${body}
       <break time="500ms"/>
       is dit correct?
+     </speak>`
+    }
+
+    else if(action == "verstuurBerichtBody.verstuurBericht-isCorrect"){
+     
+      textResponse = `<speak>
+      Ik heb uw bericht verzonden.
+      <break time="500ms"/>
+      kan ik nog iets voor u betekenen?
      </speak>`
     }
 
