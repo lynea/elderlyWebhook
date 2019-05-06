@@ -110,7 +110,7 @@ var medSchema = [
       let newDate = req.body.queryResult.parameters.afspraakDag; 
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
     }else if(action == "veranderTijd"){
-      let newTime = req.body.queryResult.parameters.afspraakenTijd; 
+      let newTime = req.body.queryResult.parameters.afsprakenTijd; 
       textResponse = "ik heb de tijd van de uitnodiging veranderd naar " + newTime + " en ik heb uw uitnodiging verstuurd "; 
     }
 
