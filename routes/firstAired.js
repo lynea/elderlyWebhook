@@ -113,9 +113,10 @@ var medSchema = [
 
   
     else if(action == "welcome"){
-      textResponse = ` <speak> Hallo ik ben Elderly.
+      textResponse = `<speak> Hallo ik ben Elderly
       <break time="300ms"/>
-      Ik kan u helpen met het communiceren met uw familie. <break time="300ms"/> Zo kan ik bijvoorbeeld berichten versturen,  <break time="300ms"/> uw familieleden vragen op bezoek te komen  <break time="300ms"/> en u vertellen wat er allemaal op uw schema staat.  <break time="300ms"/> wat kan ik voor u betekenen? </speak>`; 
+      Ik kan u helpen met het communiceren met uw familie. <break time="300ms"/> Zo kan ik bijvoorbeeld berichten versturen,  <break time="300ms"/> uw familieleden vragen op bezoek te komen  <break time="300ms"/> en u vertellen wat er allemaal op uw schema staat.   <break time ="300ms"/> wat kan ik voor u betekenen? <break time="300ms"/> u heeft ${berichten.length} nieuwe berichten.
+      </speak>`; 
     }
 
 
