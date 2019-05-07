@@ -35,19 +35,19 @@ router.post('/', function(req, res, next) {
 
   var planning = [
     {
-      day :"maandag", 
+      day :"woensdag", 
       startTime : "8 uur s'avonds",
       endTime : "10 uur s'avonds", 
       user : "Jan" 
     }, 
     {
-      day :"woensdag", 
+      day :"vrijdag", 
       startTime : "4 uur s'middags",
       endTime : "6 uur s'middags", 
       user : "Aletta" 
     }, 
     {
-      day :"vrijdag", 
+      day :"zaterdag", 
       startTime : "8 uur s'avonds",
       endTime : "10 uur s'avonds", 
       user : "Ramon" 
@@ -102,24 +102,22 @@ var medSchema = [
       textResponse = "ik heb de ontvanger veranderd naar " + recipient; 
     }else if(action == "vraagLangskomen.vraagLangskomen-yes"){
       console.log("hitting vraagLangsKomen-yes");
-      if(req.body.queryResult.outputContexts[0].parameters.namen != undefined){
-        let newName = req.body.queryResult.outputContexts[0].parameters.namen;
-        textResponse = ` <speak> ik heb de uitnodiging verstuurd naar  ${newName}
-        <break time="500ms"/>
+      
+        textResponse = `<speak> Ik heb uw uitnodiging verstuurd
+        <break time="300ms"/>
         kan ik nog iets voor u betekenen? 
-        </speak>`; 
-      }else{
-        textResponse = ` <speak> ik heb de uitnodiging verstuurd
-        <break time="500ms"/>
-        kan ik nog iets voor u betekenen? 
-        </speak>`; 
+        </speak>`
       }
       
+        
+        
       
+      
+    
    
       
      
-    }else if(action == "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-dedatum-custom"){
+    else if(action == "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-dedatum-custom"){
       let newDate = req.body.queryResult.parameters.afspraakDag; 
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
     }else if(action == "veranderTijd"){
