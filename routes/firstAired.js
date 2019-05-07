@@ -20,13 +20,13 @@ router.post('/', function(req, res, next) {
   let tijdPeriode = req.body.queryResult.parameters.tijdPeriode; 
   var berichten = [
     {
-      sendDate :"29 april 2019", 
+      sendDate :"6 mei", 
       sendTime : "4 uur s'middags",
       body : "hi mam, ik kom wat later want ik sta in de file.", 
       userName : "Lisa" 
     }, 
     {
-      sendDate : "30 april 2019", 
+      sendDate : "5 mei", 
       sendTime : "6 uur s'avonds",
       body : "hey, ik kom aankomende zaterdag om drie uur even een taart langs brengen.", 
       userName : "Jan" 
@@ -101,11 +101,24 @@ var medSchema = [
     }else if(action ==  "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-denaam-custom"){
       textResponse = "ik heb de ontvanger veranderd naar " + recipient; 
     }else if(action == "vraagLangskomen.vraagLangskomen-yes"){
-      let newName = req.body.queryResult.outputContexts[0].parameters.namen;
-      textResponse = ` <speak> ik heb de uitnodiging verstuurd naar  ${newName}
-      <break time="500ms"/>
-      kan ik nog iets voor u betekenen? 
-       </speak>`; 
+      console.log("hitting vraagLangsKomen-yes");
+      if(req.body.queryResult.outputContexts[0].parameters.namen != undefined){
+        let newName = req.body.queryResult.outputContexts[0].parameters.namen;
+        textResponse = ` <speak> ik heb de uitnodiging verstuurd naar  ${newName}
+        <break time="500ms"/>
+        kan ik nog iets voor u betekenen? 
+        </speak>`; 
+      }else{
+        textResponse = ` <speak> ik heb de uitnodiging verstuurd
+        <break time="500ms"/>
+        kan ik nog iets voor u betekenen? 
+        </speak>`; 
+      }
+      
+      
+   
+      
+     
     }else if(action == "vraagLangskomen.vraagLangskomen-no.vraagLangskomen-nee-custom.vraagLangskomen-nee-dedatum-custom"){
       let newDate = req.body.queryResult.parameters.afspraakDag; 
       textResponse = "ik heb de datum van de uitnodiging veranderd naar " + newDate + " en ik heb uw uitnodiging verstuurd "; 
